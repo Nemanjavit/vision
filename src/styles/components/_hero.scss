@@ -1,0 +1,17 @@
+.hero {
+  display: flex;
+  align-items: end;
+  height: 80vh;
+  padding: 160px 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-blend-mode: darken;
+  background-color: rgba(0, 0, 0, 0.3);
+  background-image: url("../../../public/images/hero-bg.jpg");
+
+  .heading {
+    max-width: 600px;
+    text-transform: uppercase;
+  }
+}
