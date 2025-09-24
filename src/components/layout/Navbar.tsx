@@ -6,7 +6,7 @@ import logo from "../../../public/logo/vision.png";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,26 +15,55 @@ const Navbar = () => {
 
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
+    let mm = gsap.matchMedia();
+
+    mm.add("(max-width:768px)", () => {
+      gsap.to(".menu", {
+        xPercent: isNavOpen ? 100 : -100,
+        duration: 0.5,
+      });
+    });
   };
 
   useGSAP(() => {
-    if (window.innerWidth < 768) return;
-    const showAnim = gsap
-      .from(".navigation", {
-        yPercent: -100,
-        paused: true,
-        duration: 0.2,
-      })
-      .progress(1);
+    let mm = gsap.matchMedia();
 
-    ScrollTrigger.create({
-      start: "top top",
-      end: "max",
-      onUpdate: (self) => {
-        self.direction === -1 ? showAnim.play() : showAnim.reverse();
-      },
+    if (isNavOpen) {
+      gsap.set(".body", { overflow: "hidden" });
+    } else {
+      gsap.set(".body", { overflow: "unset" });
+    }
+
+    mm.add("(min-width:768px)", () => {
+      const showAnim = gsap
+        .from(".navigation", {
+          yPercent: -100,
+          paused: true,
+          duration: 0.2,
+        })
+        .progress(1);
+
+      ScrollTrigger.create({
+        start: "top top",
+        end: "max",
+        onUpdate: (self) => {
+          self.direction === -1 ? showAnim.play() : showAnim.reverse();
+        },
+      });
     });
   }, [isNavOpen]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        setIsNavOpen(false);
+        gsap.set(".menu", { clearProps: "all" });
+      };
+      window.addEventListener("resize", handleResize);
+
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
 
   return (
     <nav className="py-2 navigation">

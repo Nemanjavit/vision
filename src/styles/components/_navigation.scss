@@ -62,6 +62,7 @@
   @include media-breakpoint-down(md) {
     .toggler {
       display: block;
+      background: transparent;
     }
 
     .menu {
@@ -69,18 +70,20 @@
       left: 50%;
       top: 74px;
       z-index: 2;
-      display: flex;
       height: 100vh;
+      display: flex;
       position: fixed;
       flex-direction: column;
       background-color: white;
       transform: translateX(100%);
-      transition: all 0.2s ease-in-out;
 
       &-open {
         padding: 40px 0;
         justify-content: start;
-        transform: translateX(0%);
+      }
+
+      &-closed {
+        transform: translateX(100%);
       }
     }
 
@@ -95,5 +98,6 @@
 }
 
 html {
+  scrollbar-gutter: stable;
   height: 3000px;
 }
